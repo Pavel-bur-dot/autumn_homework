@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y ninja-build cmake libgtest-dev
+
+      - name: Configure CMake
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Run task_01 test cases
+        run: python3 scripts/run_cases.py --tasks task_01 --tests-layout in-task --timeout 2.0 --normalize strip --save-actual
+
+

@@ -53,3 +53,38 @@ Test(test_name, test_number) {
     ASSERT_EQ(expected_value, real_value); // лучше сравнивать что то простое, например bool и int
 }
 ```
+
+### Скрипт для проверки решений (run_cases.py)
+
+В репозитории есть скрипт `scripts/run_cases.py`, который запускает собранные исполняемые файлы задач и сравнивает их вывод с эталонами.
+
+Как подготовить тесты (по умолчанию — внутри папки задачи):
+
+```
+task_01/
+  src/
+  tests/
+    case1.in
+    case1.out
+    case2.in
+    case2.out
+```
+
+Запуск проверок для одной или нескольких задач:
+
+```bash
+python3 scripts/run_cases.py --tasks task_01
+# или несколько задач
+python3 scripts/run_cases.py --tasks task_01 task_02
+```
+
+Полезные флаги:
+- `--tests-layout in-task|central` — где лежат тесты (по умолчанию `in-task`).
+- `--tests-dir <path>` — путь к центральной папке тестов (если `--tests-layout=central`).
+- `--timeout <sec>` — таймаут на тест (по умолчанию 2.0).
+- `--normalize strip|keep|lines` — нормализация вывода при сравнении (по умолчанию `strip`).
+- `--write-missing` — если `.out` отсутствует, записать текущий вывод как эталон.
+- `--update-expected` — перезаписать существующие `.out` текущим выводом.
+- `--save-actual` — при несовпадении сохранить фактический вывод в `<case>.out.actual`.
+
+Примечание: в CI пока настроен только запуск скрипта для `task_01` (см. `.github/workflows/ci.yml`).
