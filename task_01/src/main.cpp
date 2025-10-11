@@ -59,8 +59,9 @@ int main() {
   for (int i = 0; i < numEdges; ++i) {
     int u = 0, v = 0;
     std::cin >> u >> v;
-    if (u < 1 || u > numVertices || v < 1 || v > numVertices)
+    if (u < 1 || u > numVertices || v < 1 || v > numVertices) {
       continue;
+    }
     if (u == v)
       continue; // ignore self-loops for criticality purposes
     adjacencyList[u].push_back(v);

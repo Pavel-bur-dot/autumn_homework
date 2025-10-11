@@ -21,7 +21,17 @@ jobs:
       - name: Build
         run: cmake --build build --config Release
 
+      - name: List task_01 tests
+        run: ls -la task_01/tests || true
+
       - name: Run task_01 test cases
         run: python3 scripts/run_cases.py --tasks task_01 --tests-layout in-task --timeout 2.0 --normalize strip --save-actual
+
+      - name: Upload actual outputs (if any)
+        uses: actions/upload-artifact@v4
+        with:
+          name: task_01-actual-outputs
+          path: task_01/tests/*.out.actual
+          if-no-files-found: ignore
 
 
