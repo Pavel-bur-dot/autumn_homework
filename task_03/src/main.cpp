@@ -1,3 +1,6 @@
-#include <iostream>
+#include "topological_sorter.hpp"
 
-int main() { return 0; }
+int main() {
+    TopologicalSorter::solveTopologicalSort();
+    return 0;
+}
