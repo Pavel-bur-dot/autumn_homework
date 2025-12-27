@@ -2,7 +2,7 @@
 #include <algorithm>
 
 Graph::Graph(int n) : vertices_count(n) {
-    adjacency_list.resize(n + 1); // Индексация с 1
+    adjacency_list.resize(n + 1);
 }
 
 void Graph::addEdge(int u, int v) {

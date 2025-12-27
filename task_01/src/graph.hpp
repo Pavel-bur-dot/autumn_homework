@@ -23,8 +23,7 @@ public:
     int getVerticesCount() const;
     const std::vector<std::vector<int>>& getAdjacencyList() const;
     
-    // Вспомогательные методы
     void sortAdjacencyLists();
 };
 
-#endif // GRAPH_HPP
+#endif

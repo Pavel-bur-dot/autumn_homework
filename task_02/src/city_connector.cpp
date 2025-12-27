@@ -13,7 +13,6 @@ CityConnector::CityConnector(int n)
 }
 
 void CityConnector::addRoad(int from, int to) {
-    // Приводим к 0-based индексации (ввод с 1)
     int u = from - 1;
     int v = to - 1;
     
@@ -46,7 +45,6 @@ void CityConnector::dfsSecond(int v) {
 }
 
 void CityConnector::buildCondensedGraph() {
-    // Первый проход DFS (прямой граф)
     visited.assign(vertices_count, false);
     order.clear();
     
@@ -56,7 +54,6 @@ void CityConnector::buildCondensedGraph() {
         }
     }
     
-    // Второй проход DFS (обратный граф) в порядке убывания времени выхода
     visited.assign(vertices_count, false);
     std::reverse(order.begin(), order.end());
     components_count = 0;
@@ -71,20 +68,16 @@ void CityConnector::buildCondensedGraph() {
 }
 
 int CityConnector::findMinRoadsToConnect() {
-    // Если граф пустой или из одной вершины
     if (vertices_count <= 1) {
         return 0;
     }
     
-    // 1. Находим сильно связные компоненты (алгоритм Косарайю)
     buildCondensedGraph();
     
-    // Если весь граф уже сильно связный
     if (components_count == 1) {
         return 0;
     }
     
-    // 2. Строим граф конденсации и считаем полустепени
     std::vector<int> in_degree(components_count, 0);
     std::vector<int> out_degree(components_count, 0);
     
@@ -97,14 +90,12 @@ int CityConnector::findMinRoadsToConnect() {
         }
     }
     
-    // 3. Считаем количество истоков и стоков
     int sources = 0, sinks = 0;
     for (int i = 0; i < components_count; ++i) {
         if (in_degree[i] == 0) sources++;
         if (out_degree[i] == 0) sinks++;
     }
     
-    // 4. Ответ: max(истоки, стоки)
     return std::max(sources, sinks);
 }
 

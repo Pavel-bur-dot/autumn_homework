@@ -7,11 +7,10 @@ TopologicalSorter::TopologicalSorter(int n)
       has_cycle(false) {
     
     graph.resize(n);
-    visited.assign(n, 0); // 0 - White, 1 - Gray, 2 - Black
+    visited.assign(n, 0);
 }
 
 void TopologicalSorter::addEdge(int from, int to) {
-    // Приводим к 0-based индексации (ввод с 1)
     int u = from - 1;
     int v = to - 1;
     
@@ -19,24 +18,21 @@ void TopologicalSorter::addEdge(int from, int to) {
 }
 
 void TopologicalSorter::dfs(int v) {
-    // Если уже нашли цикл, прекращаем
     if (has_cycle) return;
     
-    visited[v] = 1; // Gray - в обработке
+    visited[v] = 1;
     
     for (int to : graph[v]) {
         if (visited[to] == 0) {
             dfs(to);
         } else if (visited[to] == 1) {
-            // Нашли обратное ребро - цикл!
             has_cycle = true;
             return;
         }
-        // Если visited[to] == 2 (Black) - просто пропускаем
     }
     
-    visited[v] = 2; // Black - обработана
-    result.push_back(v);  // Добавляем в обратном порядке
+    visited[v] = 2;
+    result.push_back(v);
 }
 
 bool TopologicalSorter::sort() {
@@ -53,7 +49,6 @@ bool TopologicalSorter::sort() {
         }
     }
     
-    // Разворачиваем результат (DFS добавлял в обратном порядке)
     std::reverse(result.begin(), result.end());
     return true;
 }
@@ -78,11 +73,10 @@ void TopologicalSorter::solveTopologicalSort() {
     }
     
     if (sorter.sort()) {
-        // Выводим результат (переводим обратно к 1-based)
         const auto& order = sorter.getOrder();
         for (size_t i = 0; i < order.size(); ++i) {
             if (i > 0) std::cout << " ";
-            std::cout << order[i] + 1;  // +1 для 1-based вывода
+            std::cout << order[i] + 1;
         }
         std::cout << "\n";
     } else {

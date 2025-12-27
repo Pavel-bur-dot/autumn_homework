@@ -20,7 +20,6 @@ add_executable(${PROJECT_NAME}
     src/topological_sorter.cpp
 )
 
-# Locate GTest
 enable_testing()
 find_package(GTest REQUIRED)
 
@@ -29,7 +28,6 @@ include_directories(${GTEST_INCLUDE_DIRS})
 find_library(Utils ../)
 target_link_libraries(${PROJECT_NAME} PUBLIC Utils)
 
-# Link runTests with what we want to test and the GTest and pthread library
 add_executable(${PROJECT_NAME}_tests ${test_source_list})
 target_sources(${PROJECT_NAME}_tests PRIVATE 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/topological_sorter.cpp"

@@ -27,7 +27,6 @@ void NetworkAnalyzer::dfsCritical(
                            articulation_points, bridges);
                 low[vertex] = std::min(low[vertex], low[neighbor]);
                 
-                // Проверка на мост
                 if (low[neighbor] > tin[vertex]) {
                     bridges.push_back({
                         std::min(vertex, neighbor),
@@ -35,7 +34,6 @@ void NetworkAnalyzer::dfsCritical(
                     });
                 }
                 
-                // Проверка на точку сочленения (не корень)
                 if (low[neighbor] >= tin[vertex] && parent != -1) {
                     articulation_points.insert(vertex);
                 }
@@ -44,19 +42,16 @@ void NetworkAnalyzer::dfsCritical(
                 break;
             }
             case Color::Gray: {
-                // Обратное ребро в текущем DFS дереве
                 low[vertex] = std::min(low[vertex], tin[neighbor]);
                 break;
             }
             case Color::Black: {
-                // Уже обработанная вершина (из другой компоненты связности)
                 low[vertex] = std::min(low[vertex], tin[neighbor]);
                 break;
             }
         }
     }
     
-    // Проверка для корня DFS
     if (parent == -1 && children_count > 1) {
         articulation_points.insert(vertex);
     }
@@ -73,7 +68,6 @@ NetworkAnalyzer::findCriticalElements() const {
     std::vector<std::pair<int, int>> bridges;
     int timer = 0;
     
-    // Запускаем DFS для каждой компоненты связности
     for (int v = 1; v <= vertices_count; ++v) {
         if (colors[v] == Color::White) {
             dfsCritical(v, -1, tin, low, colors, timer, 
@@ -81,13 +75,11 @@ NetworkAnalyzer::findCriticalElements() const {
         }
     }
     
-    // Конвертируем set в vector
     std::vector<int> articulation_points(
         articulation_points_set.begin(), 
         articulation_points_set.end()
     );
     
-    // Сортируем мосты лексикографически
     std::sort(bridges.begin(), bridges.end());
     
     return {articulation_points, bridges};
@@ -108,16 +100,12 @@ void NetworkAnalyzer::solveNetworkProblem() {
         analyzer.addEdge(u, v);
     }
     
-    // Сортируем списки смежности (по желанию)
     analyzer.sortAdjacencyLists();
     
     auto [articulation_points, bridges] = analyzer.findCriticalElements();
     
-    // Вывод результатов
-    // 1. Количество критических устройств
     std::cout << articulation_points.size() << "\n";
     
-    // 2. Список критических устройств
     if (articulation_points.empty()) {
         std::cout << "-\n";
     } else {
@@ -128,10 +116,8 @@ void NetworkAnalyzer::solveNetworkProblem() {
         std::cout << "\n";
     }
     
-    // 3. Количество критических соединений
     std::cout << bridges.size() << "\n";
     
-    // 4. Список критических соединений
     if (bridges.empty()) {
         std::cout << "-\n";
     } else {

@@ -17,7 +17,6 @@ include_directories(${PROJECT_NAME} PUBLIC src)
 
 add_executable(${PROJECT_NAME} ${source_list})
 
-# Locate GTest
 enable_testing()
 find_package(GTest REQUIRED)
 
@@ -26,8 +25,13 @@ include_directories(${GTEST_INCLUDE_DIRS})
 find_library(Utils ../)
 target_link_libraries(${PROJECT_NAME} PUBLIC Utils)
 
-# Link runTests with what we want to test and the GTest and pthread library
-add_executable(${PROJECT_NAME}_tests ${test_source_list})
+file(GLOB all_cpp_files "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+list(FILTER all_cpp_files EXCLUDE REGEX ".*main\.cpp$")
+
+add_executable(${PROJECT_NAME}_tests 
+    ${all_cpp_files}
+    ${test_source_list}
+)
 target_link_libraries(
   ${PROJECT_NAME}_tests
   GTest::gtest_main

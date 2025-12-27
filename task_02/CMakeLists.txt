@@ -16,7 +16,6 @@ include_directories(${PROJECT_NAME} PUBLIC src)
 
 add_executable(${PROJECT_NAME} ${source_list})
 
-# Locate GTest
 enable_testing()
 find_package(GTest REQUIRED)
 
@@ -25,14 +24,11 @@ include_directories(${GTEST_INCLUDE_DIRS})
 find_library(Utils ../)
 target_link_libraries(${PROJECT_NAME} PUBLIC Utils)
 
-# ========== ИСПРАВЛЕНИЕ: Добавляем city_connector.cpp в тесты ==========
-# Получаем все .cpp файлы кроме main.cpp
 file(GLOB all_cpp_files "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-list(FILTER all_cpp_files EXCLUDE REGEX ".*main\.cpp$")  # Исключаем main.cpp
+list(FILTER all_cpp_files EXCLUDE REGEX ".*main\.cpp$")
 
-# Создаем тесты со ВСЕМИ нужными .cpp файлами
 add_executable(${PROJECT_NAME}_tests 
-    ${all_cpp_files}        # Все .cpp файлы (кроме main.cpp)
+    ${all_cpp_files}
 )
 
 target_link_libraries(
