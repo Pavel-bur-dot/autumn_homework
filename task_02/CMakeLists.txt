@@ -1,4 +1,3 @@
-
 cmake_minimum_required(VERSION 3.10)
 
 get_filename_component(PROJECT_NAME ${CMAKE_CURRENT_LIST_DIR} NAME)
@@ -26,8 +25,16 @@ include_directories(${GTEST_INCLUDE_DIRS})
 find_library(Utils ../)
 target_link_libraries(${PROJECT_NAME} PUBLIC Utils)
 
-# Link runTests with what we want to test and the GTest and pthread library
-add_executable(${PROJECT_NAME}_tests ${test_source_list})
+# ========== ИСПРАВЛЕНИЕ: Добавляем city_connector.cpp в тесты ==========
+# Получаем все .cpp файлы кроме main.cpp
+file(GLOB all_cpp_files "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+list(FILTER all_cpp_files EXCLUDE REGEX ".*main\.cpp$")  # Исключаем main.cpp
+
+# Создаем тесты со ВСЕМИ нужными .cpp файлами
+add_executable(${PROJECT_NAME}_tests 
+    ${all_cpp_files}        # Все .cpp файлы (кроме main.cpp)
+)
+
 target_link_libraries(
   ${PROJECT_NAME}_tests
   GTest::gtest_main
